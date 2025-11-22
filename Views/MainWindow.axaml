@@ -1,0 +1,471 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:UltimateConverter.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="UltimateConverter.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Prism"
+        MinWidth="700" MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        Background="#0F0F0F"
+        TransparencyLevelHint="AcrylicBlur"
+        FontFamily="SF Pro Display, Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif">
+
+    <Window.Styles>
+        <Style Selector="Button.GhostBtn">
+            <Setter Property="Background" Value="#1A1A1A"/>
+            <Setter Property="Foreground" Value="#CCCCCC"/> 
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.25" Easing="CubicEaseOut"/>
+                    <BrushTransition Property="Foreground" Duration="0:0:0.25" Easing="CubicEaseOut"/>
+                </Transitions>
+            </Setter>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}" 
+                            CornerRadius="{TemplateBinding CornerRadius}" 
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter Content="{TemplateBinding Content}" 
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"
+                                          Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <Style Selector="Button.GhostBtn:pointerover">
+            <Setter Property="Background" Value="#333"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.GhostBtn.Add:pointerover">
+            <Setter Property="Background" Value="#007AFF"/>
+        </Style>
+        <Style Selector="Button.GhostBtn.Clear:pointerover">
+            <Setter Property="Background" Value="#FF3B30"/> 
+        </Style>
+
+        <Style Selector="Button.MainAction">
+            <Setter Property="Background" Value="#222"/>
+            <Setter Property="Foreground" Value="White"/> <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="55"/>
+            <Setter Property="Padding" Value="20,0"/> 
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.3" Easing="CircularEaseOut"/>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1"/>
+                </Transitions>
+            </Setter>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}" 
+                            CornerRadius="8"> 
+                        <ContentPresenter Content="{TemplateBinding Content}" 
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"
+                                          FontSize="16"
+                                          FontWeight="SemiBold"
+                                          Margin="{TemplateBinding Padding}"
+                                          Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="Button.MainAction:pointerover">
+            <Setter Property="Background" Value="#34C759"/> 
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="RenderTransform" Value="scale(1.01)"/>
+        </Style>
+        <Style Selector="Button.MainAction.Cancel">
+            <Setter Property="Background" Value="#CC2020"/> 
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.MainAction.Cancel:pointerover">
+            <Setter Property="Background" Value="#FF3B30"/> 
+        </Style>
+        
+        <Style Selector="TextBlock.FlashlightTarget">
+            <Setter Property="Foreground" Value="#AAAAAA"/> 
+        </Style>
+        <Style Selector="PathIcon.FlashlightTarget">
+            <Setter Property="Foreground" Value="#AAAAAA"/> 
+        </Style>
+        <Style Selector="Path.FlashlightTarget">
+            <Setter Property="Fill" Value="#AAAAAA"/> 
+        </Style>
+        
+        <Style Selector="ToggleButton.ComboToggle">
+            <Setter Property="Background" Value="#1A1A1A"/>
+            <Setter Property="BorderBrush" Value="#333"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Name="PART_Border"
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Border.Transitions>
+                            <Transitions>
+                                <BrushTransition Property="BorderBrush" Duration="0:0:0.2" Easing="CubicEaseOut"/>
+                            </Transitions>
+                        </Border.Transitions>
+                        
+                        <Grid ColumnDefinitions="*,Auto">
+                            <ContentPresenter Grid.Column="0" 
+                                              Content="{TemplateBinding Content}"
+                                              Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"/>
+                            
+                            <PathIcon Name="Arrow" Grid.Column="1" Width="10" Height="10" Margin="0,0,12,0"
+                                      Data="M0,0 L5,5 L10,0"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <Style Selector="ToggleButton.ComboToggle /template/ PathIcon#Arrow">
+            <Setter Property="Foreground" Value="#888"/>
+            <Setter Property="RenderTransform" Value="rotate(0deg)"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Foreground" Duration="0:0:0.2" Easing="CubicEaseOut"/>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.3" Easing="CubicEaseOut"/>
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="ToggleButton.ComboToggle:pointerover /template/ Border#PART_Border">
+            <Setter Property="BorderBrush" Value="#666"/>
+        </Style>
+        <Style Selector="ToggleButton.ComboToggle:checked /template/ Border#PART_Border">
+            <Setter Property="BorderBrush" Value="#007AFF"/>
+        </Style>
+        <Style Selector="ToggleButton.ComboToggle:checked /template/ PathIcon#Arrow">
+            <Setter Property="RenderTransform" Value="rotate(180deg)"/>
+            <Setter Property="Foreground" Value="#007AFF"/>
+        </Style>
+
+        <Style Selector="ComboBox.FormatCombo">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid>
+                        <ToggleButton Classes="ComboToggle"
+                                      Name="PART_DropDownButton"
+                                      Focusable="False"
+                                      HorizontalAlignment="Stretch"
+                                      IsChecked="{TemplateBinding IsDropDownOpen, Mode=TwoWay}">
+                             <ContentPresenter Content="{TemplateBinding SelectionBoxItem}"
+                                               ContentTemplate="{TemplateBinding ItemTemplate}"/>
+                        </ToggleButton>
+
+                        <Popup Name="PART_Popup" 
+                               IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
+                               IsLightDismissEnabled="True"
+                               PlacementTarget="{Binding ElementName=PART_DropDownButton}"
+                               MinWidth="{Binding Bounds.Width, ElementName=PART_DropDownButton}">
+                            
+                            <Border Background="#1A1A1A" BorderBrush="#333" BorderThickness="1" CornerRadius="8" Margin="0,4,0,0" Padding="4">
+                                <ScrollViewer>
+                                    <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}"/>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Panel>
+                        <!-- УБИРАЕМ SelectionPill и используем простой Border -->
+                        <Border Name="BackgroundBorder" 
+                                Background="Transparent" 
+                                CornerRadius="6">
+                            <Border.Transitions>
+                                <Transitions>
+                                    <BrushTransition Property="Background" Duration="0:0:0.15"/>
+                                </Transitions>
+                            </Border.Transitions>
+                        </Border>
+                        
+                        <ContentPresenter Content="{TemplateBinding Content}" 
+                                        Background="Transparent" 
+                                        Foreground="{TemplateBinding Foreground}"
+                                        Margin="{TemplateBinding Padding}"
+                                        Name="PART_ContentPresenter"/>
+                    </Panel>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem:pointerover /template/ Border#BackgroundBorder">
+            <Setter Property="Background" Value="#1AFFFFFF"/> <!-- Легкая подсветка при наведении -->
+        </Style>
+
+        <Style Selector="ComboBoxItem:selected /template/ Border#BackgroundBorder">
+            <Setter Property="Background" Value="#2A007AFF"/> <!-- Легкая подсветка выбранного -->
+        </Style>
+
+        <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style Selector="RadioButton.TabOption">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#888"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Foreground" Duration="0:0:0.2" Easing="CubicEaseOut"/>
+                </Transitions>
+            </Setter>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="Transparent">
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        
+        <Style Selector="RadioButton.TabOption:pointerover">
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+        </Style>
+
+        <Style Selector="RadioButton.TabOption:checked">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        
+        <Style Selector="Border.SliderPill">
+            <Setter Property="RenderTransform" Value="translateX(0px)"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.3" Easing="CubicEaseOut"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Border.SliderPill.VideoMode">
+            <Setter Property="RenderTransform" Value="translateX(126px)"/>
+        </Style>
+
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto, *, Auto">
+
+        <Grid Grid.Row="0" Height="80" Margin="30,10" ColumnDefinitions="Auto, *">
+            <StackPanel Orientation="Horizontal" Spacing="14" VerticalAlignment="Center">
+                <Border Width="36" Height="36" Background="Transparent">
+                    <Viewbox Width="28" Height="28">
+                         <Path Data="M14,0 L17.5,10.5 L28,14 L17.5,17.5 L14,28 L10.5,17.5 L0,14 L10.5,10.5 Z" 
+                              Fill="White"
+                              Stretch="Uniform"/>
+                    </Viewbox>
+                </Border>
+
+                <TextBlock Text="Prism" FontSize="26" FontWeight="Bold" 
+                           Classes="FlashlightTarget"
+                           VerticalAlignment="Center" LetterSpacing="0.5" IsHitTestVisible="False"/>
+            </StackPanel>
+
+            <Border Grid.Column="1" Background="#1A1A1A" CornerRadius="14" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Height="40" Width="260">
+                <Grid>
+                    <Border Classes="SliderPill" 
+                            Classes.VideoMode="{Binding !IsImageMode}"
+                            Background="#333" CornerRadius="12" Margin="4"
+                            Width="126" HorizontalAlignment="Left" 
+                            BoxShadow="0 1 4 0 #33000000"/>
+
+                    <Grid ColumnDefinitions="*,*" Width="260" Height="40">
+                        <RadioButton Grid.Column="0" Classes="TabOption" GroupName="Mode" Content="Изображения" 
+                                     IsChecked="{Binding IsImageMode}" Command="{Binding SwitchToImagesCommand}"/>
+                        <RadioButton Grid.Column="1" Classes="TabOption" GroupName="Mode" Content="Видео и Аудио" 
+                                     Command="{Binding SwitchToVideoCommand}"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Panel Grid.Row="1" Margin="30, 10, 30, 20">
+            
+            <Grid RowDefinitions="Auto, *, Auto, Auto" IsVisible="{Binding IsImageMode}">
+                
+                <Grid ColumnDefinitions="Auto, Auto, *, Auto" Margin="0,0,0,20">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Classes="GhostBtn Add" Content="+ Добавить фото" 
+                                Command="{Binding AddFilesCommand}" 
+                                CommandParameter="{Binding $parent[Window].StorageProvider}"
+                                IsEnabled="{Binding !IsBusy}"/>
+                        
+                        <Button Classes="GhostBtn Clear" Content="Очистить" 
+                                Command="{Binding ClearListCommand}" 
+                                IsEnabled="{Binding !IsBusy}"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="2" Text="{Binding ImageCount}" VerticalAlignment="Center" 
+                               HorizontalAlignment="Center" Classes="FlashlightTarget" FontWeight="Bold" FontSize="12"/>
+
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                        <TextBlock Text="Формат" VerticalAlignment="Center" Classes="FlashlightTarget" FontSize="13"/>
+                        <ComboBox Classes="FormatCombo" Width="100" ItemsSource="{Binding ImageFormats}" 
+                                  SelectedItem="{Binding SelectedImageFormat}" IsEnabled="{Binding !IsBusy}"
+                                  MaxDropDownHeight="250"/>
+                    </StackPanel>
+                </Grid>
+
+                <Border Grid.Row="1" Background="#131313" CornerRadius="12" BorderBrush="#222" BorderThickness="1" 
+                        DragDrop.AllowDrop="True" Name="ImgDropZone">
+                    <Panel>
+                        <ListBox ItemsSource="{Binding ImageFiles}" Background="Transparent" Margin="5">
+                             <ListBox.ItemTemplate>
+                                 <DataTemplate>
+                                     <Border Background="#1A1A1A" CornerRadius="6" Padding="10" Margin="0,2">
+                                          <Grid ColumnDefinitions="Auto, *">
+                                               <PathIcon Data="M2,2H22V22H2V2Z M4,4V14L8,10L12,14L16,10L20,14V4H4Z" Width="14" Foreground="#555" Margin="0,0,10,0"/>
+                                               <TextBlock Grid.Column="1" Text="{Binding}" Foreground="#DDD" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                          </Grid>
+                                     </Border>
+                                 </DataTemplate>
+                             </ListBox.ItemTemplate>
+                        </ListBox>
+                        
+                        <StackPanel IsVisible="{Binding !ImageFiles.Count}" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="15">
+                            <PathIcon Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Width="40" Height="40" Classes="FlashlightTarget"/>
+                            <TextBlock Text="Перетащите файлы сюда" Classes="FlashlightTarget" FontSize="15"/>
+                        </StackPanel>
+                    </Panel>
+                </Border>
+
+                <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto" Margin="0,25">
+                    <TextBlock Text="Сохранить в:" Classes="FlashlightTarget" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding OutputFolder}" Classes="FlashlightTarget" 
+                               VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Opacity="0.8"/>
+                    <Button Grid.Column="2" Content="Изменить" Classes="GhostBtn" Margin="10,0,0,0" FontSize="13" Padding="12,6"
+                            Command="{Binding SelectFolderCommand}"
+                            CommandParameter="{Binding $parent[Window].StorageProvider}"/>
+                </Grid>
+                
+                <Panel Grid.Row="3">
+                    <Button Classes="MainAction" 
+                            Classes.Cancel="{Binding IsBusy}"
+                            Content="{Binding MainButtonText}" 
+                            Command="{Binding MainActionCommand}"/>
+                </Panel>
+            </Grid>
+
+            <Grid RowDefinitions="Auto, *, Auto, Auto" IsVisible="{Binding !IsImageMode}">
+                <Grid ColumnDefinitions="Auto, Auto, *, Auto" Margin="0,0,0,20">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Classes="GhostBtn Add" Content="+ Добавить медиа" 
+                                Command="{Binding AddFilesCommand}" 
+                                CommandParameter="{Binding $parent[Window].StorageProvider}"
+                                IsEnabled="{Binding !IsBusy}"/>
+                        <Button Classes="GhostBtn Clear" Content="Очистить" 
+                                Command="{Binding ClearListCommand}" 
+                                IsEnabled="{Binding !IsBusy}"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="2" Text="{Binding VideoCount}" VerticalAlignment="Center" 
+                               HorizontalAlignment="Center" Classes="FlashlightTarget" FontWeight="Bold" FontSize="12"/>
+
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                        <TextBlock Text="Формат" VerticalAlignment="Center" Classes="FlashlightTarget" FontSize="13"/>
+                        <ComboBox Classes="FormatCombo" Width="140" ItemsSource="{Binding VideoFormats}" 
+                                  SelectedItem="{Binding SelectedVideoFormat}" IsEnabled="{Binding !IsBusy}"
+                                  MaxDropDownHeight="250"/>
+                    </StackPanel>
+                </Grid>
+
+                <Border Grid.Row="1" Background="#131313" CornerRadius="12" BorderBrush="#222" BorderThickness="1"
+                        DragDrop.AllowDrop="True" Name="VidDropZone">
+                    <Panel>
+                        <ListBox ItemsSource="{Binding VideoFiles}" Background="Transparent" Margin="5">
+                             <ListBox.ItemTemplate>
+                                 <DataTemplate>
+                                     <Border Background="#1A1A1A" CornerRadius="6" Padding="10" Margin="0,2">
+                                          <Grid ColumnDefinitions="Auto, *">
+                                               <PathIcon Data="M10,16.5L16,12L10,7.5V16.5M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12Z" Width="14" Foreground="#555" Margin="0,0,10,0"/>
+                                               <TextBlock Grid.Column="1" Text="{Binding}" Foreground="#DDD" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                          </Grid>
+                                     </Border>
+                                 </DataTemplate>
+                             </ListBox.ItemTemplate>
+                        </ListBox>
+                        <StackPanel IsVisible="{Binding !VideoFiles.Count}" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="15">
+                            <PathIcon Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Width="40" Height="40" Classes="FlashlightTarget"/>
+                            <TextBlock Text="Перетащите медиа сюда" Classes="FlashlightTarget" FontSize="15"/>
+                        </StackPanel>
+                    </Panel>
+                </Border>
+
+                <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto" Margin="0,25">
+                    <TextBlock Text="Сохранить в:" Classes="FlashlightTarget" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding OutputFolder}" Classes="FlashlightTarget" 
+                               VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Opacity="0.8"/>
+                    <Button Grid.Column="2" Content="Изменить" Classes="GhostBtn" Margin="10,0,0,0" FontSize="13" Padding="12,6"
+                            Command="{Binding SelectFolderCommand}"
+                            CommandParameter="{Binding $parent[Window].StorageProvider}"/>
+                </Grid>
+                
+                <Panel Grid.Row="3">
+                    <Button Classes="MainAction" 
+                            Classes.Cancel="{Binding IsBusy}"
+                            Content="{Binding MainButtonText}" 
+                            Command="{Binding MainActionCommand}"/>
+                </Panel>
+            </Grid>
+
+        </Panel>
+
+        <Grid Grid.Row="2" Margin="0">
+            <ProgressBar Value="{Binding ProgressValue}" Maximum="100" Height="2" VerticalAlignment="Bottom" 
+                         Background="Transparent" Foreground="#34C759" IsVisible="{Binding IsBusy}"/>
+            <TextBlock Text="{Binding StatusMessage}" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                       Classes="FlashlightTarget" FontSize="11" Margin="0,0,0,8"/>
+        </Grid>
+
+    </Grid>
+</Window>

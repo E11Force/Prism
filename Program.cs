@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace UltimateConverter;
+namespace Prism;
 
 sealed class Program
 {

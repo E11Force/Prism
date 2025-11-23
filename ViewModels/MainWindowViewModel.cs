@@ -9,9 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using UltimateConverter.Services;
+using Prism.Services;
 
-namespace UltimateConverter.ViewModels
+namespace Prism.ViewModels
 {
     public partial class MainWindowViewModel : ObservableObject
     {
@@ -38,16 +38,13 @@ namespace UltimateConverter.ViewModels
         [ObservableProperty] private string _outputFolder = "Рядом с исходными файлами";
         private string _realOutputPath = "";
 
-        // Текст для кнопки
         public string MainButtonText => IsBusy ? "Отменить процесс" : "Начать конвертацию";
 
-        // Единая команда для кнопки
         [RelayCommand]
         public async Task MainAction()
         {
             if (IsBusy)
             {
-                // Команда отмены синхронная, вызываем Execute
                 if (StartConversionCancelCommand.CanExecute(null))
                 {
                     StartConversionCancelCommand.Execute(null);
@@ -55,7 +52,6 @@ namespace UltimateConverter.ViewModels
             }
             else
             {
-                // Команда запуска асинхронная, вызываем ExecuteAsync
                 await StartConversionCommand.ExecuteAsync(null);
             }
         }

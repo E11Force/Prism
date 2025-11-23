@@ -10,18 +10,17 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace UltimateConverter.Services
+namespace Prism.Services
 {
     public static class ConverterBackend
     {
-        // === Конвертация Изображений ===
+        // Конвертация Изображений
         public static async Task ConvertImageAsync(string inputPath, string outputFolder, string format)
         {
             if (!File.Exists(inputPath)) throw new FileNotFoundException("Файл не найден", inputPath);
 
             var fileName = Path.GetFileNameWithoutExtension(inputPath);
             var targetExt = format.ToLower();
-            // Исправление: корректное расширение для jpeg
             if (targetExt == "jpg") targetExt = "jpeg"; 
             
             var destFile = Path.Combine(outputFolder, $"{fileName}.{targetExt}");
@@ -40,13 +39,12 @@ namespace UltimateConverter.Services
             await image.SaveAsync(destFile, encoder);
         }
 
-        // === Конвертация Видео/Аудио ===
+        // Конвертация Видео/Аудио
         public static async Task ConvertMediaAsync(string inputPath, string outputFolder, string format)
         {
             if (!File.Exists(inputPath)) throw new FileNotFoundException("Файл не найден", inputPath);
 
             var fileName = Path.GetFileNameWithoutExtension(inputPath);
-            // Безопасное извлечение расширения: "MP4 (Video)" -> "mp4"
             var cleanExt = format.Split(' ')[0].ToLower();
             var destFile = Path.Combine(outputFolder, $"{fileName}.{cleanExt}");
 
@@ -66,13 +64,12 @@ namespace UltimateConverter.Services
             }
             else
             {
-                // Видео процессинг
                 await FFMpegArguments
                     .FromFileInput(inputPath)
                     .OutputToFile(destFile, true, options => options
                         .WithVideoCodec(VideoCodec.LibX264)
                         .WithAudioCodec(AudioCodec.Aac)
-                        .WithSpeedPreset(Speed.VeryFast)) // Оптимизация скорости
+                        .WithSpeedPreset(Speed.VeryFast))
                     .ProcessAsynchronously();
             }
         }

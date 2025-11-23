@@ -1,0 +1,2 @@
+A:\CsConverter\UltimateConverter\bin\Release\net9.0\win-x64\publish\UltimateConverter.pdb
+A:\CsConverter\UltimateConverter\bin\Release\net9.0\win-x64\publish\UltimateConverter.exe

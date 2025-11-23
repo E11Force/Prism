@@ -1,10 +1,10 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:UltimateConverter.ViewModels"
+        xmlns:vm="using:Prism.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
-        x:Class="UltimateConverter.Views.MainWindow"
+        x:Class="Prism.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="Prism"
         MinWidth="700" MinHeight="600"
@@ -181,7 +181,14 @@
                                PlacementTarget="{Binding ElementName=PART_DropDownButton}"
                                MinWidth="{Binding Bounds.Width, ElementName=PART_DropDownButton}">
                             
-                            <Border Background="#1A1A1A" BorderBrush="#333" BorderThickness="1" CornerRadius="8" Margin="0,4,0,0" Padding="4">
+                            <Border Name="PopupBorder"
+                                    Background="#1A1A1A" 
+                                    BorderBrush="#333" 
+                                    BorderThickness="1" 
+                                    CornerRadius="8" 
+                                    Margin="0,4,0,0" 
+                                    Padding="4"
+                                    RenderTransformOrigin="50%,0%">
                                 <ScrollViewer>
                                     <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}"/>
                                 </ScrollViewer>
@@ -190,6 +197,23 @@
                     </Grid>
                 </ControlTemplate>
             </Setter>
+        </Style>
+
+        <Style Selector="ComboBox.FormatCombo[IsDropDownOpen=true] /template/ Border#PopupBorder">
+            <Style.Animations>
+                <Animation Duration="0:0:0.35" Easing="CubicEaseOut" FillMode="Forward">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="0.7"/>
+                        <Setter Property="TranslateTransform.Y" Value="-20"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="1"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="1"/>
+                        <Setter Property="TranslateTransform.Y" Value="0"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
         </Style>
 
         <Style Selector="ComboBoxItem">
@@ -202,22 +226,41 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <Panel>
-                        <!-- УБИРАЕМ SelectionPill и используем простой Border -->
-                        <Border Name="BackgroundBorder" 
-                                Background="Transparent" 
-                                CornerRadius="6">
+                        <Border Name="Pill" 
+                                Background="#007AFF" 
+                                CornerRadius="6"
+                                Opacity="0"
+                                RenderTransformOrigin="50%,50%">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+                            </Border.RenderTransform>
                             <Border.Transitions>
                                 <Transitions>
-                                    <BrushTransition Property="Background" Duration="0:0:0.15"/>
+                                    <DoubleTransition Property="Opacity" Duration="0:0:0.25" Easing="CubicEaseOut"/>
+                                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.25" Easing="BackEaseOut"/>
+                                </Transitions>
+                            </Border.Transitions>
+                        </Border>
+                        
+                        <Border Name="HoverLayer" Background="#1AFFFFFF" CornerRadius="6" Opacity="0">
+                             <Border.Transitions>
+                                <Transitions>
+                                    <DoubleTransition Property="Opacity" Duration="0:0:0.1"/>
                                 </Transitions>
                             </Border.Transitions>
                         </Border>
                         
                         <ContentPresenter Content="{TemplateBinding Content}" 
-                                        Background="Transparent" 
-                                        Foreground="{TemplateBinding Foreground}"
-                                        Margin="{TemplateBinding Padding}"
-                                        Name="PART_ContentPresenter"/>
+                                          Background="Transparent" 
+                                          Foreground="{TemplateBinding Foreground}"
+                                          Margin="{TemplateBinding Padding}"
+                                          Name="PART_ContentPresenter">
+                             <ContentPresenter.Transitions>
+                                 <Transitions>
+                                     <BrushTransition Property="Foreground" Duration="0:0:0.15"/>
+                                 </Transitions>
+                             </ContentPresenter.Transitions>
+                        </ContentPresenter>
                     </Panel>
                 </ControlTemplate>
             </Setter>
@@ -226,21 +269,25 @@
         <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="Transparent"/>
         </Style>
-
         <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
             <Setter Property="Background" Value="Transparent"/>
         </Style>
 
-        <Style Selector="ComboBoxItem:pointerover /template/ Border#BackgroundBorder">
-            <Setter Property="Background" Value="#1AFFFFFF"/> <!-- Легкая подсветка при наведении -->
+        <Style Selector="ComboBoxItem:pointerover /template/ Border#HoverLayer">
+            <Setter Property="Opacity" Value="1"/>
+        </Style>
+        <Style Selector="ComboBoxItem:selected /template/ Border#HoverLayer">
+            <Setter Property="Opacity" Value="0"/>
         </Style>
 
-        <Style Selector="ComboBoxItem:selected /template/ Border#BackgroundBorder">
-            <Setter Property="Background" Value="#2A007AFF"/> <!-- Легкая подсветка выбранного -->
+        <Style Selector="ComboBoxItem:selected /template/ Border#Pill">
+            <Setter Property="Opacity" Value="1"/>
+            <Setter Property="RenderTransform" Value="scale(1)"/>
         </Style>
-
+        
         <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
             <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
 
         <Style Selector="RadioButton.TabOption">
@@ -298,7 +345,7 @@
             <StackPanel Orientation="Horizontal" Spacing="14" VerticalAlignment="Center">
                 <Border Width="36" Height="36" Background="Transparent">
                     <Viewbox Width="28" Height="28">
-                         <Path Data="M14,0 L17.5,10.5 L28,14 L17.5,17.5 L14,28 L10.5,17.5 L0,14 L10.5,10.5 Z" 
+                          <Path Data="M14,0 L17.5,10.5 L28,14 L17.5,17.5 L14,28 L10.5,17.5 L0,14 L10.5,10.5 Z" 
                               Fill="White"
                               Stretch="Uniform"/>
                     </Viewbox>
@@ -362,12 +409,12 @@
                         <ListBox ItemsSource="{Binding ImageFiles}" Background="Transparent" Margin="5">
                              <ListBox.ItemTemplate>
                                  <DataTemplate>
-                                     <Border Background="#1A1A1A" CornerRadius="6" Padding="10" Margin="0,2">
-                                          <Grid ColumnDefinitions="Auto, *">
-                                               <PathIcon Data="M2,2H22V22H2V2Z M4,4V14L8,10L12,14L16,10L20,14V4H4Z" Width="14" Foreground="#555" Margin="0,0,10,0"/>
-                                               <TextBlock Grid.Column="1" Text="{Binding}" Foreground="#DDD" FontSize="13" TextTrimming="CharacterEllipsis"/>
-                                          </Grid>
-                                     </Border>
+                                      <Border Background="#1A1A1A" CornerRadius="6" Padding="10" Margin="0,2">
+                                           <Grid ColumnDefinitions="Auto, *">
+                                                <PathIcon Data="M2,2H22V22H2V2Z M4,4V14L8,10L12,14L16,10L20,14V4H4Z" Width="14" Foreground="#555" Margin="0,0,10,0"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding}" Foreground="#DDD" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                           </Grid>
+                                      </Border>
                                  </DataTemplate>
                              </ListBox.ItemTemplate>
                         </ListBox>
@@ -425,12 +472,12 @@
                         <ListBox ItemsSource="{Binding VideoFiles}" Background="Transparent" Margin="5">
                              <ListBox.ItemTemplate>
                                  <DataTemplate>
-                                     <Border Background="#1A1A1A" CornerRadius="6" Padding="10" Margin="0,2">
-                                          <Grid ColumnDefinitions="Auto, *">
-                                               <PathIcon Data="M10,16.5L16,12L10,7.5V16.5M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12Z" Width="14" Foreground="#555" Margin="0,0,10,0"/>
-                                               <TextBlock Grid.Column="1" Text="{Binding}" Foreground="#DDD" FontSize="13" TextTrimming="CharacterEllipsis"/>
-                                          </Grid>
-                                     </Border>
+                                      <Border Background="#1A1A1A" CornerRadius="6" Padding="10" Margin="0,2">
+                                           <Grid ColumnDefinitions="Auto, *">
+                                                <PathIcon Data="M10,16.5L16,12L10,7.5V16.5M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12Z" Width="14" Foreground="#555" Margin="0,0,10,0"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding}" Foreground="#DDD" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                           </Grid>
+                                      </Border>
                                  </DataTemplate>
                              </ListBox.ItemTemplate>
                         </ListBox>

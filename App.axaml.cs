@@ -4,10 +4,10 @@ using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using Avalonia.Markup.Xaml;
-using UltimateConverter.ViewModels;
-using UltimateConverter.Views;
+using Prism.ViewModels;
+using Prism.Views;
 
-namespace UltimateConverter;
+namespace Prism;
 
 public partial class App : Application
 {

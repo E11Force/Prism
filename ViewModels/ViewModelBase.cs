@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace UltimateConverter.ViewModels;
+namespace Prism.ViewModels;
 
 public abstract class ViewModelBase : ObservableObject
 {

@@ -1659,19 +1659,21 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "A:\\CsConverter\\UltimateConverter\\UltimateConverter.csproj",
-      "projectName": "UltimateConverter",
-      "projectPath": "A:\\CsConverter\\UltimateConverter\\UltimateConverter.csproj",
+      "projectUniqueName": "A:\\CsConverter\\Prism\\Prism.csproj",
+      "projectName": "Prism",
+      "projectPath": "A:\\CsConverter\\Prism\\Prism.csproj",
       "packagesPath": "C:\\Users\\Fozik\\.nuget\\packages\\",
-      "outputPath": "A:\\CsConverter\\UltimateConverter\\obj\\",
+      "outputPath": "A:\\CsConverter\\Prism\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Fozik\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Fozik\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
